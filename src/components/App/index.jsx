@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import Header from '../Header'
 import Main from '../Main'
 import Profile from '../Profile'
-import { HashRouter, Match } from 'react-router'
+import { HashRouter, Route } from 'react-router-dom'
 import Login from '../Login'
 import firebase from 'firebase'
 
@@ -26,13 +26,10 @@ class App extends Component {
   componentWillMount () {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        this.setState({
-          user
-        })
+        this.setState({ user })
+        console.log(user)
       } else {
-        this.setState({
-          user: null
-        })
+        this.setState({ user: null })
       }
     })
   }
@@ -41,22 +38,14 @@ class App extends Component {
     const provider = new firebase.auth.GithubAuthProvider()
 
     firebase.auth().signInWithPopup(provider)
-    .then(
-      result => console.log(`${result.user.email} ha iniciado sesión.`)
-    )
-    .cath(
-      error => console.log(`Error ${error.code}: ${error.message}`)
-    )
+    .then(result => console.log(`${result.user.email} ha iniciado sesión.`))
+    .cath(error => console.log(`Error: ${error.code}: ${error.message}`))
   }
 
   handleLogout () {
     firebase.auth().signOut()
-    .then(
-      result => console.log('Te has desconectado correctamente.')
-    )
-    .catch(
-      error => console.log('Un error ocurrió.')
-    )
+    .then(() => console.log('Te has desconectado correctamente.'))
+    .catch(() => console.log('Un error ocurrió.'))
   }
 
   render () {
@@ -64,7 +53,8 @@ class App extends Component {
       <HashRouter>
         <div>
           <Header />
-          <Match exactly pattern='/' render={() => {
+
+          <Route exact path='/' render={() => {
             if (this.state.user) {
               return (
                 <Main
@@ -80,7 +70,7 @@ class App extends Component {
           }}
           />
 
-          <Match pattern='/profile' render={() => {
+          <Route path='/profile' render={() => {
             return (
               <Profile
                 picture={this.state.user.photoURL}
@@ -92,7 +82,7 @@ class App extends Component {
             )
           }} />
 
-          <Match pattern='/user/":username"' render={({params}) => {
+          <Route path='/user/:username' render={({ params }) => {
             return (
               <Profile
                 displayName={params.username}

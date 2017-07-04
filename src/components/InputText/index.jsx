@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react'
+import React, { PropTypes } from 'react'
 import styles from './input-text.css'
 
 const propTypes = {
@@ -7,20 +7,18 @@ const propTypes = {
   usernameToReply: PropTypes.string.isRequired
 }
 
-class InputText extends Component {
-  render () {
-    return (
-      <form className={styles.form} onSubmit={this.props.onSendText}>
-        <textarea className={styles.text} name='text'>
-          {(this.props.usernameToReply) ? `@${this.props.usernameToReply} ` : ''}
-        </textarea>
-        <div className={styles.buttons}>
-          <button className={styles.close} onClick={this.props.onCloseText}>Cerrar</button>
-          <button className={styles.send} type='submit'>Enviar</button>
-        </div>
-      </form>
-    )
-  }
+function InputText ({ onSendText, usernameToReply, onCloseText }) {
+  return (
+    <form className={styles.form} method='post' onSubmit={onSendText}>
+      <textarea className={styles.text} name='text'>
+        {(usernameToReply) ? `@${usernameToReply} ` : ''}
+      </textarea>
+      <div className={styles.buttons}>
+        <button className={styles.close} onClick={onCloseText}>Cerrar</button>
+        <button className={styles.send} type='submit'>Enviar</button>
+      </div>
+    </form>
+  )
 }
 
 InputText.propTypes = propTypes
