@@ -4,9 +4,11 @@
   "description": "Clon de Twitter con React para propósitos educativos.",
   "main": "/build/app.js",
   "scripts": {
+    "production": "webpack -p",
     "build": "webpack --colors",
     "serve": "webpack-dev-server --content-base build/ --colors --progress",
-    "start": "npm run build && npm run serve"
+    "start": "npm run build && npm run serve",
+    "firebase:login": "firebase login"
   },
   "author": "Aarón RJ",
   "license": "MIT",
